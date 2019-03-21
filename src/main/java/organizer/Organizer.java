@@ -1,16 +1,11 @@
 package organizer;
 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.util.*;
-import org.springframework.http.*;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
-@RestController
 public class Organizer {
 
 	private HashMap<Integer,User> users;
-	private HashMap<Long, Appointment> appointments;
+	private HashMap<Integer, Appointment> appointments;
 
 	static private Organizer instance;
 	static public Organizer shared() {
@@ -22,12 +17,48 @@ public class Organizer {
 
 	private Organizer() {
 		 users = new HashMap<Integer,User>();
-		 appointments = new HashMap<Long, Appointment>();
+		 appointments = new HashMap<Integer, Appointment>();
+
+		 // TODO: remove
+		 addUser(new User(1,"Markus"));
 	}
-	Integer currentId = 0;
-	public Integer generateId() {
-		currentId = currentId + 1;
-		return currentId;
+
+	Integer currentUserId = 0;
+	public Integer generateUserId() {
+		currentUserId = currentUserId + 1;
+		return currentUserId;
+	}
+
+	Integer currentAppointmentId = 0;
+	public Integer generateApppointmentId() {
+		currentAppointmentId = currentAppointmentId + 1;
+		return currentAppointmentId;
+	}
+
+	public void addAppointment(Appointment app) {
+		appointments.put(app.getId(), app);
+	}
+
+	public Appointment getAppointment(Integer id) {
+		return appointments.get(id);
+	}
+
+	public void removeAppointment(Integer id) {
+		// TODO: appointments
+		appointments.remove(id);
+	}
+
+	public List<Appointment> getAppointments(Integer id){
+		User user = getUser(id);
+		if (user != null) {
+			return new ArrayList<Appointment>(user.getAppointments());
+		} else {
+			return null;
+		}
+	}
+
+	public List<Appointment> getAllAppointments(){
+		return new ArrayList<Appointment>(appointments.values());
 	}
 
 	public void addUser(User user) {
@@ -41,6 +72,10 @@ public class Organizer {
 	public void removeUser(Integer id) {
 		// TODO: appointments
 		users.remove(id);
+	}
+
+	public List<User> getAllUsers(){
+		return new ArrayList<User>(users.values());
 	}
 
 }

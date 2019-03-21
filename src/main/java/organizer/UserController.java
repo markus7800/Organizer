@@ -4,21 +4,34 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.util.*;
 import org.springframework.http.*;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.List;
+//import java.util.HashMap;
 
 @RestController
 public class UserController {
 
 	private Organizer organizer = Organizer.shared();
 
-	@GetMapping("v1/users")
-	public User getUsers(){
-		System.out.println("get");
-		return new User(1,"Markus");
+	@GetMapping("users")
+	public List<User> getUsers(){
+		return organizer.getAllUsers();
 	}
 
-	@PostMapping(path="v1/users", consumes="application/json")		
-	public ResponseEntity addUser(@RequestBody Map<String,String> body) throws Exception {
+	@GetMapping("users/{id}")
+	public ResponseEntity getUser(@PathVariable Integer id) {
+		
+		User user = organizer.getUser(id);
+		if (user == null) {
+			return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body("User with id " + id + " not found.");
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(user);
+	}
+
+	@PostMapping(path="users", consumes="application/json")		
+	public ResponseEntity addUser(@RequestBody Map<String,String> body) {
 	
 		String name = body.get("name");
 		if (name == null) {
@@ -27,14 +40,14 @@ public class UserController {
             .body("Name field is missing.");
 		}
 
-		Integer id = organizer.generateId();
+		Integer id = organizer.generateUserId();
 		User newUser = new User(id,(String) name);
 		organizer.addUser(newUser);
 
 		return ResponseEntity.status(HttpStatus.OK).body(newUser);
 	}
 
-	@PatchMapping(path="v1/users/{id}", consumes="application/json")	
+	@PatchMapping(path="users/{id}", consumes="application/json")	
 	public ResponseEntity updateUser(@PathVariable Integer id, @RequestBody Map<String,String> body) {
 
 		User user = organizer.getUser(id);
@@ -50,7 +63,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
 
-	@DeleteMapping(path="v1/users/{id}")	
+	@DeleteMapping(path="users/{id}")	
 	public ResponseEntity removeUser(@PathVariable Integer id) {
 
 		organizer.removeUser(id);
