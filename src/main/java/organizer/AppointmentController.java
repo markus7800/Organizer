@@ -56,7 +56,7 @@ public class AppointmentController {
 		}
 
 		// Check if all ids match users
-		List<User> attendees = new ArrayList<User>();
+		Set<User> attendees = new HashSet<User>();
 
 		for (Integer id : attendeeIds) {
 			User user = organizer.getUser(id);

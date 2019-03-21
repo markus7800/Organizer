@@ -43,7 +43,22 @@ public class User {
         return true;
     }
 
+    public void removeAppointment(Appointment app) {
+        appointments.remove(app);
+    }
+
+    public void cancelAppointments() {
+        for (Appointment app: appointments) {
+            app.removeUser(this);
+        }
+        appointments = null;
+    }
+
     public void addAppointment(Appointment app) {
         appointments.add(app);
+    }
+
+    public Boolean equals(User other) {
+        return this.id == other.id;
     }
 }

@@ -44,7 +44,8 @@ public class Organizer {
 	}
 
 	public void removeAppointment(Integer id) {
-		// TODO: appointments
+		Appointment app = getAppointment(id);
+		app.cancel();
 		appointments.remove(id);
 	}
 
@@ -70,7 +71,8 @@ public class Organizer {
 	}
 
 	public void removeUser(Integer id) {
-		// TODO: appointments
+		User user = getUser(id);
+		user.cancelAppointments();
 		users.remove(id);
 	}
 

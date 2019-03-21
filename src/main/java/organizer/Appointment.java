@@ -7,9 +7,9 @@ public class Appointment {
 	private String title;
 	private Date startdate;
 	private Date enddate;
-	private List<User> attendees;
+	private Set<User> attendees;
 
-	public Appointment(Integer id, String title, Date startdate, Date enddate, List<User> attendees) {
+	public Appointment(Integer id, String title, Date startdate, Date enddate, Set<User> attendees) {
 		this.id = id;
 		this.title = title;
 		this.startdate = startdate;
@@ -39,6 +39,16 @@ public class Appointment {
 			ids.add(attendee.getId());
 		}
 		return ids;
+	}
+
+	public void cancel() {
+		for (User attendee: attendees) {
+			attendee.removeAppointment(this);
+		}
+	}
+
+	public void removeUser(User user) {
+		attendees.remove(user);
 	}
 
 	public Boolean equals(Appointment other) {
