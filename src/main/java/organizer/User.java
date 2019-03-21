@@ -4,21 +4,25 @@ import java.util.List;
 
 public class User {
 
-	private final long id;
-	private final String name;
+	private final Integer id;
+	private String name;
 
 	private List<Appointment> appointment;
 
-	public User(long id, String name) {
+	public User(Integer id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name){
+    	this.name = name;
     }
 }

@@ -1,35 +1,46 @@
 package organizer;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.util.*;
+import org.springframework.http.*;
 import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 public class Organizer {
 
-	private Map<Long,User> users;
-	private Map<Long, Appointment> appointments;
+	private HashMap<Integer,User> users;
+	private HashMap<Long, Appointment> appointments;
 
-	public Organizer() {
-		// users = new Map<long,User>();
-		// appointments = new Map<long, Appointment>();
+	static private Organizer instance;
+	static public Organizer shared() {
+		if (instance == null) {
+			instance = new Organizer();
+		}
+		return instance;
 	}
 
-	@GetMapping("v1/test")
-	public void test() {
-		System.out.println("test");
+	private Organizer() {
+		 users = new HashMap<Integer,User>();
+		 appointments = new HashMap<Long, Appointment>();
+	}
+	Integer currentId = 0;
+	public Integer generateId() {
+		currentId = currentId + 1;
+		return currentId;
 	}
 
-	// MARK: - 
-	@GetMapping("v1/users")
-	public User users(){
-		System.out.println("get");
-		return new User(1,"Markus");
+	public void addUser(User user) {
+		users.put(user.getId(), user);
 	}
 
-	@PostMapping("v1/users")		
-	public Map<String, String> addUser(@RequestParam Map<String, String> body) {
-		System.out.println("post");
-		return body;
+	public User getUser(Integer id) {
+		return users.get(id);
+	}
+
+	public void removeUser(Integer id) {
+		// TODO: appointments
+		users.remove(id);
 	}
 
 }
