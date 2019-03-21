@@ -18,9 +18,6 @@ public class Organizer {
 	private Organizer() {
 		 users = new HashMap<Integer,User>();
 		 appointments = new HashMap<Integer, Appointment>();
-
-		 // TODO: remove
-		 addUser(new User(1,"Markus"));
 	}
 
 	Integer currentUserId = 0;
