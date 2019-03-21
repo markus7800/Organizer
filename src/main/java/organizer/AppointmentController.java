@@ -19,7 +19,7 @@ public class AppointmentController {
 	}
 
 	@GetMapping("appointments/{id}")
-	public ResponseEntity getAppointments(@PathVariable Integer id) {
+	public ResponseEntity getAppointment(@PathVariable Integer id) {
 		List<Appointment> apps = organizer.getAppointments(id);
 		if (apps == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with id " + id + " not found.");
@@ -27,7 +27,7 @@ public class AppointmentController {
 		return ResponseEntity.status(HttpStatus.OK).body(apps);
 	}
 
-	@PostMapping("appointments")
+	@PostMapping(path="appointments", consumes="application/json")
 	public ResponseEntity createAppointment(@RequestBody Map<String,Object> body) {
 		
 		// Check if all field are there
